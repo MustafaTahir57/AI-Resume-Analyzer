@@ -1,0 +1,29 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+.pytest_cache/
+
+# Alembic
+# (keep migrations, ignore nothing here — just noting)
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (for frontend later)
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# Uploaded files (resumes) — never commit user data
+uploads/
