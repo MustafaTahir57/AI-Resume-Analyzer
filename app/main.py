@@ -3,9 +3,11 @@ from fastapi import FastAPI
 from sqlalchemy import text
 from app.db.session import engine
 from app.api.v1.routes_auth import router as auth_router
+from app.api.v1.routes_resumes import router as resumes_router
 
 app = FastAPI(title="AI Resume Analyzer API", version="1.0.0")
 app.include_router(auth_router)
+app.include_router(resumes_router)
 
 @app.get("/health")
 async def health_check():
