@@ -28,7 +28,7 @@ Resume text:
         "Content-Type": "application/json",
     }
     payload = {
-        "model": "meta-llama/llama-3.1-8b-instruct:free",
+        "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
         "messages": [{"role": "user", "content": prompt}],
     }
 
@@ -36,6 +36,8 @@ Resume text:
         response = await client.post(OPENROUTER_URL, headers=headers, json=payload)
         response.raise_for_status()
         result = response.json()
+
+        ai_text = result["choices"][0]["message"]["content"]
 
     ai_text = result["choices"][0]["message"]["content"]
     return json.loads(ai_text)
