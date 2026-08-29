@@ -11,6 +11,7 @@ from app.core.config import settings
 from app.db.base import Base
 from app.models.user import User  # noqa: F401 -- import so it registers with Base.metadata
 from app.models.resume import Resume  # noqa: F401
+from app.models.analysis import Analysis
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
