@@ -26,3 +26,8 @@ async def update_analysis_result(db: AsyncSession, analysis_id, status: str, res
 async def get_analysis_by_id(db: AsyncSession, analysis_id):
     result = await db.execute(select(Analysis).where(Analysis.id == analysis_id))
     return result.scalar_one_or_none()
+
+# app/repositories/analysis_repo.py — add this
+async def get_analyses_by_resume(db: AsyncSession, resume_id):
+    result = await db.execute(select(Analysis).where(Analysis.resume_id == resume_id))
+    return result.scalars().all()

@@ -19,3 +19,8 @@ async def create_resume(db: AsyncSession, user_id, file_path: str, original_file
 async def get_resume_by_id(db: AsyncSession, resume_id):
     result = await db.execute(select(Resume).where(Resume.id == resume_id))
     return result.scalar_one_or_none()
+
+# app/repositories/resume_repo.py — add this
+async def get_resumes_by_user(db: AsyncSession, user_id):
+    result = await db.execute(select(Resume).where(Resume.user_id == user_id))
+    return result.scalars().all()
