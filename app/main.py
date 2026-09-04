@@ -8,11 +8,19 @@ import logging
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from app.core.logging import setup_logging
+from fastapi.middleware.cors import CORSMiddleware
 
 setup_logging()
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Resume Analyzer API", version="1.0.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # dev ke liye sab allow — production mein specific domain daalenge
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):

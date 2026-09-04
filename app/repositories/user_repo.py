@@ -17,3 +17,8 @@ async def create_user(db: AsyncSession, email: str, hashed_password: str, full_n
 async def get_user_by_id(db: AsyncSession, user_id: str):
     result = await db.execute(select(User).where(User.id == user_id))
     return result.scalar_one_or_none()
+
+async def update_user_password(db: AsyncSession, user_id, hashed_password: str):
+    user = await db.get(User, user_id)
+    user.hashed_password = hashed_password
+    await db.commit()
