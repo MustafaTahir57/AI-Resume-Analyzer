@@ -30,7 +30,7 @@ async def get_analysis_by_id(db: AsyncSession, analysis_id):
 
     if analysis and analysis.status == "pending":
         age = datetime.utcnow() - analysis.created_at
-        if age > timedelta(minutes=2):
+        if age > timedelta(minutes=3):
             analysis.status = "failed"
             await db.commit()
             await db.refresh(analysis)
