@@ -36,10 +36,10 @@ async def run_analysis_task(analysis_id, resume_text: str):
             logger.error(f"Analysis failed for {analysis_id}: {e}")
             await update_analysis_result(db, analysis_id, "failed", None)
 
-# app/api/v1/routes_resumes.py — analyze route simplify karo
 @router.post("/{resume_id}/analyze")
 async def analyze(
     resume_id: str = Path(...),
+    background_tasks: BackgroundTasks = None,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -47,13 +47,10 @@ async def analyze(
     if resume is None or resume.user_id != current_user.id:
         raise HTTPException(status_code=404, detail="Resume not found")
 
-    try:
-        result = await analyze_resume(resume.extracted_text)
-        analysis = await create_analysis(db, resume.id, result)  # status="completed" default rakho ya seedha result store karo
-        return {"analysis_id": analysis.id, "status": "completed", "result": result}
-    except Exception as e:
-        logger.error(f"Analysis failed: {e}")
-        raise HTTPException(status_code=500, detail="Analysis failed. Please try again.")
+    analysis = await create_pending_analysis(db, resume.id)
+    background_tasks.add_task(run_analysis_task, analysis.id, resume.extracted_text)
+
+    return {"analysis_id": analysis.id, "status": "pending"}
 
 @router.get("/analysis/{analysis_id}")
 async def get_analysis(
