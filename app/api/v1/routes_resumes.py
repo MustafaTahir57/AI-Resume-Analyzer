@@ -33,6 +33,7 @@ async def run_analysis_task(analysis_id, resume_text: str):
             result = await analyze_resume(resume_text)
             await update_analysis_result(db, analysis_id, "completed", result)
         except Exception:
+            logger.error(f"Analysis failed for {analysis_id}: {e}")
             await update_analysis_result(db, analysis_id, "failed", None)
 
 @router.post("/{resume_id}/analyze")
